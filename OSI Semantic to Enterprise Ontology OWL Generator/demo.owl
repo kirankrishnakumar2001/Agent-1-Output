@@ -1,0 +1,754 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+    xmlns:ex="http://example.com/cisco/bookings/ontology#"
+    xml:base="http://example.com/cisco/bookings/ontology">
+
+    <owl:Ontology rdf:about="http://example.com/cisco/bookings/ontology">
+        <rdfs:label xml:lang="en">Cisco Bookings Enterprise Ontology</rdfs:label>
+        <rdfs:comment xml:lang="en">Enterprise OWL ontology generated from the provided OSI semantic model, glossary, SQL DDL, and Quote-to-Booking business process documentation. The ontology models booking analytics at booked order-line grain and the supporting dimensions, process stages, roles, and reasoning constraints. Explicit source semantics are preserved; inferred axioms are annotated in comments.</rdfs:comment>
+        <owl:versionInfo>1.0.0</owl:versionInfo>
+    </owl:Ontology>
+
+    <owl:Class rdf:about="http://example.com/cisco/bookings/ontology#BusinessEntity">
+        <rdfs:label>Business Entity</rdfs:label>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://example.com/cisco/bookings/ontology#BusinessDomain">
+        <rdfs:label>Business Domain</rdfs:label>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://example.com/cisco/bookings/ontology#ProcessActivity">
+        <rdfs:label>Process Activity</rdfs:label>
+        <rdfs:comment>Abstract class for Quote-to-Booking process activities from the business process document.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://example.com/cisco/bookings/ontology#Role">
+        <rdfs:label>Role</rdfs:label>
+        <rdfs:comment>Business role with responsibility in the Quote-to-Booking process.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://example.com/cisco/bookings/ontology#Date">
+        <rdfs:subClassOf rdf:resource="http://example.com/cisco/bookings/ontology#BusinessEntity"/>
+        <rdfs:label>Date</rdfs:label>
+        <rdfs:comment>Stores calendar and fiscal date information used for analyzing bookings across different time periods.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://example.com/cisco/bookings/ontology#Customer">
+        <rdfs:subClassOf rdf:resource="http://example.com/cisco/bookings/ontology#BusinessEntity"/>
+        <rdfs:label>Customer</rdfs:label>
+        <rdfs:comment>Contains descriptive information about customers who purchase products or services.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://example.com/cisco/bookings/ontology#Product">
+        <rdfs:subClassOf rdf:resource="http://example.com/cisco/bookings/ontology#BusinessEntity"/>
+        <rdfs:label>Product</rdfs:label>
+        <rdfs:comment>Contains descriptive information about products and services sold through bookings.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://example.com/cisco/bookings/ontology#Partner">
+        <rdfs:subClassOf rdf:resource="http://example.com/cisco/bookings/ontology#BusinessEntity"/>
+        <rdfs:label>Partner</rdfs:label>
+        <rdfs:comment>Stores information about channel partners involved in selling products.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://example.com/cisco/bookings/ontology#Geography">
+        <rdfs:subClassOf rdf:resource="http://example.com/cisco/bookings/ontology#BusinessEntity"/>
+        <rdfs:label>Geography</rdfs:label>
+        <rdfs:comment>Provides hierarchical geographic information for analyzing bookings across global regions.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://example.com/cisco/bookings/ontology#SalesRepresentative">
+        <rdfs:subClassOf rdf:resource="http://example.com/cisco/bookings/ontology#BusinessEntity"/>
+        <rdfs:label>Sales Representative</rdfs:label>
+        <rdfs:comment>Contains information about sales representatives responsible for customer bookings.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://example.com/cisco/bookings/ontology#Contract">
+        <rdfs:subClassOf rdf:resource="http://example.com/cisco/bookings/ontology#BusinessEntity"/>
+        <rdfs:label>Contract</rdfs:label>
+        <rdfs:comment>Stores information describing customer contracts associated with bookings.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://example.com/cisco/bookings/ontology#Booking">
+        <rdfs:subClassOf rdf:resource="http://example.com/cisco/bookings/ontology#BusinessEntity"/>
+        <rdfs:label>Booking</rdfs:label>
+        <rdfs:comment>Measurable business transaction representing a booked order line.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://example.com/cisco/bookings/ontology#occursOn"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://example.com/cisco/bookings/ontology#Date"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://example.com/cisco/bookings/ontology#forCustomer"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://example.com/cisco/bookings/ontology#Customer"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://example.com/cisco/bookings/ontology#includesProduct"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://example.com/cisco/bookings/ontology#Product"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://example.com/cisco/bookings/ontology#soldThroughPartner"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://example.com/cisco/bookings/ontology#Partner"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://example.com/cisco/bookings/ontology#associatedWithGeography"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://example.com/cisco/bookings/ontology#Geography"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://example.com/cisco/bookings/ontology#ownedBySalesRepresentative"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://example.com/cisco/bookings/ontology#SalesRepresentative"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://example.com/cisco/bookings/ontology#governedByContract"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://example.com/cisco/bookings/ontology#Contract"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://example.com/cisco/bookings/ontology#OpportunityQualification">
+        <rdfs:subClassOf rdf:resource="http://example.com/cisco/bookings/ontology#ProcessActivity"/>
+        <rdfs:label>Opportunity Qualification</rdfs:label>
+    </owl:Class>
+    <owl:Class rdf:about="http://example.com/cisco/bookings/ontology#QuoteConfiguration">
+        <rdfs:subClassOf rdf:resource="http://example.com/cisco/bookings/ontology#ProcessActivity"/>
+        <rdfs:label>Quote Configuration</rdfs:label>
+    </owl:Class>
+    <owl:Class rdf:about="http://example.com/cisco/bookings/ontology#DealRegistration">
+        <rdfs:subClassOf rdf:resource="http://example.com/cisco/bookings/ontology#ProcessActivity"/>
+        <rdfs:label>Deal Registration</rdfs:label>
+    </owl:Class>
+    <owl:Class rdf:about="http://example.com/cisco/bookings/ontology#OrderPlacement">
+        <rdfs:subClassOf rdf:resource="http://example.com/cisco/bookings/ontology#ProcessActivity"/>
+        <rdfs:label>Order Placement</rdfs:label>
+    </owl:Class>
+    <owl:Class rdf:about="http://example.com/cisco/bookings/ontology#BookingRecognition">
+        <rdfs:subClassOf rdf:resource="http://example.com/cisco/bookings/ontology#ProcessActivity"/>
+        <rdfs:label>Booking Recognition</rdfs:label>
+        <rdfs:comment>A valid accepted order is recognized as a booking with booking amount, ACV, and TCV computed.</rdfs:comment>
+    </owl:Class>
+    <owl:Class rdf:about="http://example.com/cisco/bookings/ontology#FulfillmentProvisioning">
+        <rdfs:subClassOf rdf:resource="http://example.com/cisco/bookings/ontology#ProcessActivity"/>
+        <rdfs:label>Fulfillment and Provisioning</rdfs:label>
+    </owl:Class>
+    <owl:Class rdf:about="http://example.com/cisco/bookings/ontology#ContractEntitlementCreation">
+        <rdfs:subClassOf rdf:resource="http://example.com/cisco/bookings/ontology#ProcessActivity"/>
+        <rdfs:label>Contract and Entitlement Creation</rdfs:label>
+    </owl:Class>
+    <owl:Class rdf:about="http://example.com/cisco/bookings/ontology#RenewalLifecycle">
+        <rdfs:subClassOf rdf:resource="http://example.com/cisco/bookings/ontology#ProcessActivity"/>
+        <rdfs:label>Renewal Lifecycle</rdfs:label>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://example.com/cisco/bookings/ontology#SalesAccountExecutive">
+        <rdfs:subClassOf rdf:resource="http://example.com/cisco/bookings/ontology#Role"/>
+        <rdfs:label>Sales / Account Executive</rdfs:label>
+    </owl:Class>
+    <owl:Class rdf:about="http://example.com/cisco/bookings/ontology#DealDesk">
+        <rdfs:subClassOf rdf:resource="http://example.com/cisco/bookings/ontology#Role"/>
+        <rdfs:label>Deal Desk</rdfs:label>
+    </owl:Class>
+    <owl:Class rdf:about="http://example.com/cisco/bookings/ontology#RevenueOperations">
+        <rdfs:subClassOf rdf:resource="http://example.com/cisco/bookings/ontology#Role"/>
+        <rdfs:label>Revenue Operations</rdfs:label>
+    </owl:Class>
+    <owl:Class rdf:about="http://example.com/cisco/bookings/ontology#ChannelPartnerOrganization">
+        <rdfs:subClassOf rdf:resource="http://example.com/cisco/bookings/ontology#Role"/>
+        <rdfs:label>Channel / Partner Organization</rdfs:label>
+    </owl:Class>
+    <owl:Class rdf:about="http://example.com/cisco/bookings/ontology#CustomerExperienceRenewals">
+        <rdfs:subClassOf rdf:resource="http://example.com/cisco/bookings/ontology#Role"/>
+        <rdfs:label>Customer Experience (Renewals)</rdfs:label>
+    </owl:Class>
+    <owl:Class rdf:about="http://example.com/cisco/bookings/ontology#Finance">
+        <rdfs:subClassOf rdf:resource="http://example.com/cisco/bookings/ontology#Role"/>
+        <rdfs:label>Finance</rdfs:label>
+    </owl:Class>
+
+    <owl:AllDisjointClasses>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://example.com/cisco/bookings/ontology#Date"/>
+            <rdf:Description rdf:about="http://example.com/cisco/bookings/ontology#Customer"/>
+            <rdf:Description rdf:about="http://example.com/cisco/bookings/ontology#Product"/>
+            <rdf:Description rdf:about="http://example.com/cisco/bookings/ontology#Partner"/>
+            <rdf:Description rdf:about="http://example.com/cisco/bookings/ontology#Geography"/>
+            <rdf:Description rdf:about="http://example.com/cisco/bookings/ontology#SalesRepresentative"/>
+            <rdf:Description rdf:about="http://example.com/cisco/bookings/ontology#Contract"/>
+            <rdf:Description rdf:about="http://example.com/cisco/bookings/ontology#Booking"/>
+        </owl:members>
+    </owl:AllDisjointClasses>
+
+    <owl:ObjectProperty rdf:about="http://example.com/cisco/bookings/ontology#occursOn">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Booking"/>
+        <rdfs:range rdf:resource="http://example.com/cisco/bookings/ontology#Date"/>
+        <rdfs:label>occurs on</rdfs:label>
+    </owl:ObjectProperty>
+    <owl:ObjectProperty rdf:about="http://example.com/cisco/bookings/ontology#dateOfBooking">
+        <owl:inverseOf rdf:resource="http://example.com/cisco/bookings/ontology#occursOn"/>
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Date"/>
+        <rdfs:range rdf:resource="http://example.com/cisco/bookings/ontology#Booking"/>
+        <rdfs:label>date of booking</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://example.com/cisco/bookings/ontology#forCustomer">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Booking"/>
+        <rdfs:range rdf:resource="http://example.com/cisco/bookings/ontology#Customer"/>
+        <rdfs:label>for customer</rdfs:label>
+    </owl:ObjectProperty>
+    <owl:ObjectProperty rdf:about="http://example.com/cisco/bookings/ontology#hasBooking">
+        <owl:inverseOf rdf:resource="http://example.com/cisco/bookings/ontology#forCustomer"/>
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Customer"/>
+        <rdfs:range rdf:resource="http://example.com/cisco/bookings/ontology#Booking"/>
+        <rdfs:label>has booking</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://example.com/cisco/bookings/ontology#includesProduct">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Booking"/>
+        <rdfs:range rdf:resource="http://example.com/cisco/bookings/ontology#Product"/>
+        <rdfs:label>includes product</rdfs:label>
+    </owl:ObjectProperty>
+    <owl:ObjectProperty rdf:about="http://example.com/cisco/bookings/ontology#productInBooking">
+        <owl:inverseOf rdf:resource="http://example.com/cisco/bookings/ontology#includesProduct"/>
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Product"/>
+        <rdfs:range rdf:resource="http://example.com/cisco/bookings/ontology#Booking"/>
+        <rdfs:label>product in booking</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://example.com/cisco/bookings/ontology#soldThroughPartner">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Booking"/>
+        <rdfs:range rdf:resource="http://example.com/cisco/bookings/ontology#Partner"/>
+        <rdfs:label>sold through partner</rdfs:label>
+    </owl:ObjectProperty>
+    <owl:ObjectProperty rdf:about="http://example.com/cisco/bookings/ontology#partnerBooking">
+        <owl:inverseOf rdf:resource="http://example.com/cisco/bookings/ontology#soldThroughPartner"/>
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Partner"/>
+        <rdfs:range rdf:resource="http://example.com/cisco/bookings/ontology#Booking"/>
+        <rdfs:label>partner booking</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://example.com/cisco/bookings/ontology#associatedWithGeography">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Booking"/>
+        <rdfs:range rdf:resource="http://example.com/cisco/bookings/ontology#Geography"/>
+        <rdfs:label>associated with geography</rdfs:label>
+        <rdfs:comment>Glossary uses geo_key while SQL DDL uses geography_key; treated as semantically equivalent with medium confidence.</rdfs:comment>
+    </owl:ObjectProperty>
+    <owl:ObjectProperty rdf:about="http://example.com/cisco/bookings/ontology#geographyOfBooking">
+        <owl:inverseOf rdf:resource="http://example.com/cisco/bookings/ontology#associatedWithGeography"/>
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Geography"/>
+        <rdfs:range rdf:resource="http://example.com/cisco/bookings/ontology#Booking"/>
+        <rdfs:label>geography of booking</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://example.com/cisco/bookings/ontology#ownedBySalesRepresentative">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Booking"/>
+        <rdfs:range rdf:resource="http://example.com/cisco/bookings/ontology#SalesRepresentative"/>
+        <rdfs:label>owned by sales representative</rdfs:label>
+    </owl:ObjectProperty>
+    <owl:ObjectProperty rdf:about="http://example.com/cisco/bookings/ontology#ownsBooking">
+        <owl:inverseOf rdf:resource="http://example.com/cisco/bookings/ontology#ownedBySalesRepresentative"/>
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#SalesRepresentative"/>
+        <rdfs:range rdf:resource="http://example.com/cisco/bookings/ontology#Booking"/>
+        <rdfs:label>owns booking</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://example.com/cisco/bookings/ontology#governedByContract">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Booking"/>
+        <rdfs:range rdf:resource="http://example.com/cisco/bookings/ontology#Contract"/>
+        <rdfs:label>governed by contract</rdfs:label>
+    </owl:ObjectProperty>
+    <owl:ObjectProperty rdf:about="http://example.com/cisco/bookings/ontology#contractForBooking">
+        <owl:inverseOf rdf:resource="http://example.com/cisco/bookings/ontology#governedByContract"/>
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Contract"/>
+        <rdfs:range rdf:resource="http://example.com/cisco/bookings/ontology#Booking"/>
+        <rdfs:label>contract for booking</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://example.com/cisco/bookings/ontology#precedesProcess">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#ProcessActivity"/>
+        <rdfs:range rdf:resource="http://example.com/cisco/bookings/ontology#ProcessActivity"/>
+        <rdfs:label>precedes process</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://example.com/cisco/bookings/ontology#performedBy">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#ProcessActivity"/>
+        <rdfs:range rdf:resource="http://example.com/cisco/bookings/ontology#Role"/>
+        <rdfs:label>performed by</rdfs:label>
+    </owl:ObjectProperty>
+    <owl:ObjectProperty rdf:about="http://example.com/cisco/bookings/ontology#performsActivity">
+        <owl:inverseOf rdf:resource="http://example.com/cisco/bookings/ontology#performedBy"/>
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Role"/>
+        <rdfs:range rdf:resource="http://example.com/cisco/bookings/ontology#ProcessActivity"/>
+        <rdfs:label>performs activity</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://example.com/cisco/bookings/ontology#governsActivity">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Role"/>
+        <rdfs:range rdf:resource="http://example.com/cisco/bookings/ontology#ProcessActivity"/>
+        <rdfs:label>governs activity</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://example.com/cisco/bookings/ontology#producesBooking">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#BookingRecognition"/>
+        <rdfs:range rdf:resource="http://example.com/cisco/bookings/ontology#Booking"/>
+        <rdfs:label>produces booking</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://example.com/cisco/bookings/ontology#establishesContract">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#ContractEntitlementCreation"/>
+        <rdfs:range rdf:resource="http://example.com/cisco/bookings/ontology#Contract"/>
+        <rdfs:label>establishes contract</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://example.com/cisco/bookings/ontology#mayGenerateBooking">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#RenewalLifecycle"/>
+        <rdfs:range rdf:resource="http://example.com/cisco/bookings/ontology#Booking"/>
+        <rdfs:label>may generate booking</rdfs:label>
+        <rdfs:comment>Represents the documented rule that renewal bookings flow back into the booking fact population.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://example.com/cisco/bookings/ontology#downstreamConsumedBy">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#BookingRecognition"/>
+        <rdfs:range rdf:resource="http://example.com/cisco/bookings/ontology#Finance"/>
+        <rdfs:label>downstream consumed by</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#dateKey">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Date"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:label>date key</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#fullDate">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Date"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+        <rdfs:label>full date</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#monthName">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Date"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>month name</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#calendarYear">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Date"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:label>calendar year</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#fiscalYear">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Date"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>fiscal year</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#fiscalQuarter">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Date"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>fiscal quarter</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#fiscalPeriodSequence">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Date"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:label>fiscal period sequence</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#dayOfWeek">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Date"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>day of week</rdfs:label>
+        <rdfs:comment>Glossary-defined attribute not present in source SQL DDL.</rdfs:comment>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#monthNumber">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Date"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:label>month number</rdfs:label>
+        <rdfs:comment>Glossary-defined attribute not present in source SQL DDL.</rdfs:comment>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#calendarQuarter">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Date"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>calendar quarter</rdfs:label>
+        <rdfs:comment>Glossary-defined attribute not present in source SQL DDL.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#customerKey">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Customer"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:label>customer key</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#customerId">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Customer"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>customer id</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#customerName">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Customer"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>customer name</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#segment">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Customer"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>segment</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#industry">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Customer"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>industry</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#accountTier">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Customer"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>account tier</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#headquartersCountry">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Customer"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>headquarters country</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#headquartersRegion">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Customer"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>headquarters region</rdfs:label>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#productKey">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Product"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:label>product key</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#productId">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Product"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>product id</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#productName">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Product"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>product name</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#productFamily">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Product"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>product family</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#technologyDomain">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Product"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>technology domain</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#offerType">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Product"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>offer type</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#businessEntityName">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Product"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>business entity name</rdfs:label>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#partnerKey">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Partner"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:label>partner key</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#partnerId">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Partner"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>partner id</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#partnerName">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Partner"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>partner name</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#partnerType">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Partner"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>partner type</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#partnerTier">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Partner"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>partner tier</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#routeToMarket">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Partner"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>route to market</rdfs:label>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#geographyKey">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Geography"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:label>geography key</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#geoKeyAlias">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Geography"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:label>geo key alias</rdfs:label>
+        <rdfs:comment>Glossary alias corresponding to geography_key.</rdfs:comment>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#region">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Geography"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>region</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#theater">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Geography"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>theater</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#country">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Geography"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>country</rdfs:label>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#salesRepKey">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#SalesRepresentative"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:label>sales representative key</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#representativeId">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#SalesRepresentative"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>representative id</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#representativeName">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#SalesRepresentative"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>representative name</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#salesRole">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#SalesRepresentative"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>sales role</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#salesTeam">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#SalesRepresentative"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>sales team</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#segmentCovered">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#SalesRepresentative"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>segment covered</rdfs:label>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#contractKey">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Contract"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:label>contract key</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#contractType">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Contract"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>contract type</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#termMonths">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Contract"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:label>term months</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#autoRenewFlag">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Contract"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>auto renew flag</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#coverageLevel">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Contract"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>coverage level</rdfs:label>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#bookingId">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Booking"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:label>booking id</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#orderNumber">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Booking"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>order number</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#orderLineNumber">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Booking"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:label>order line number</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#bookingType">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Booking"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>booking type</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#isRenewal">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Booking"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+        <rdfs:label>is renewal</rdfs:label>
+        <rdfs:comment>Source SQL models this as integer 0/1; mapped here to xsd:boolean for semantic clarity.</rdfs:comment>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#quantity">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Booking"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:label>quantity</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#unitListPriceUsd">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Booking"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:label>unit list price USD</rdfs:label>
+        <rdfs:comment>Non-additive unit rate; should not be summed.</rdfs:comment>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#discountPct">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Booking"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:label>discount percentage</rdfs:label>
+        <rdfs:comment>Non-additive percentage; should use average or weighted logic.</rdfs:comment>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#bookingAmountUsd">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Booking"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:label>booking amount USD</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#acvUsd">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Booking"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:label>annual contract value USD</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#tcvUsd">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Booking"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:label>total contract value USD</rdfs:label>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#processDescription">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#ProcessActivity"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>process description</rdfs:label>
+    </owl:DatatypeProperty>
+    <owl:DatatypeProperty rdf:about="http://example.com/cisco/bookings/ontology#responsibilityDescription">
+        <rdfs:domain rdf:resource="http://example.com/cisco/bookings/ontology#Role"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>responsibility description</rdfs:label>
+    </owl:DatatypeProperty>
+
+    <owl:NamedIndividual rdf:about="http://example.com/cisco/bookings/ontology#TimeDomain">
+        <rdf:type rdf:resource="http://example.com/cisco/bookings/ontology#BusinessDomain"/>
+        <rdfs:label>Time</rdfs:label>
+    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="http://example.com/cisco/bookings/ontology#CustomerSalesDomain">
+        <rdf:type rdf:resource="http://example.com/cisco/bookings/ontology#BusinessDomain"/>
+        <rdfs:label>Customer and Sales</rdfs:label>
+    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="http://example.com/cisco/bookings/ontology#ProductContractDomain">
+        <rdf:type rdf:resource="http://example.com/cisco/bookings/ontology#BusinessDomain"/>
+        <rdfs:label>Product and Contract</rdfs:label>
+    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="http://example.com/cisco/bookings/ontology#BookingsAnalyticsDomain">
+        <rdf:type rdf:resource="http://example.com/cisco/bookings/ontology#BusinessDomain"/>
+        <rdfs:label>Bookings Analytics</rdfs:label>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://example.com/cisco/bookings/ontology#quoteToBookingFlow">
+        <rdf:type rdf:resource="http://example.com/cisco/bookings/ontology#ProcessActivity"/>
+        <rdfs:label>Quote-to-Booking Flow</rdfs:label>
+        <ex:processDescription>Front portion of the Order-to-Cash cycle beginning when a qualified opportunity is ready to transact and ending when a valid customer order is accepted and recognized as a booking.</ex:processDescription>
+    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="http://example.com/cisco/bookings/ontology#renewalLoop">
+        <rdf:type rdf:resource="http://example.com/cisco/bookings/ontology#ProcessActivity"/>
+        <rdfs:label>Renewal Loop</rdfs:label>
+        <ex:processDescription>Renewal lifecycle in which upcoming expirations are managed and renewal bookings flow back into the booking fact population.</ex:processDescription>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://example.com/cisco/bookings/ontology#salesAccountExecutiveRole">
+        <rdf:type rdf:resource="http://example.com/cisco/bookings/ontology#SalesAccountExecutive"/>
+        <ex:responsibilityDescription>Qualifies opportunity, owns the customer relationship and the booking.</ex:responsibilityDescription>
+    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="http://example.com/cisco/bookings/ontology#dealDeskRole">
+        <rdf:type rdf:resource="http://example.com/cisco/bookings/ontology#DealDesk"/>
+        <ex:responsibilityDescription>Approves non-standard pricing and structures the commercial terms.</ex:responsibilityDescription>
+    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="http://example.com/cisco/bookings/ontology#revenueOperationsRole">
+        <rdf:type rdf:resource="http://example.com/cisco/bookings/ontology#RevenueOperations"/>
+        <ex:responsibilityDescription>Owns booking definitions, ACV/TCV rules and bookings reporting.</ex:responsibilityDescription>
+    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="http://example.com/cisco/bookings/ontology#customerExperienceRenewalsRole">
+        <rdf:type rdf:resource="http://example.com/cisco/bookings/ontology#CustomerExperienceRenewals"/>
+        <ex:responsibilityDescription>Owns entitlements, install base and the renewal lifecycle.</ex:responsibilityDescription>
+    </owl:NamedIndividual>
+
+    <rdf:Description rdf:about="http://example.com/cisco/bookings/ontology#OpportunityQualification">
+        <ex:processDescription>Account executive qualifies the opportunity; customer segment and coverage model are confirmed.</ex:processDescription>
+        <ex:performedBy rdf:resource="http://example.com/cisco/bookings/ontology#salesAccountExecutiveRole"/>
+        <ex:precedesProcess rdf:resource="http://example.com/cisco/bookings/ontology#QuoteConfiguration"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://example.com/cisco/bookings/ontology#QuoteConfiguration">
+        <ex:processDescription>Products are configured, list pricing is applied, and discounts route to Deal Desk for approval.</ex:processDescription>
+        <ex:performedBy rdf:resource="http://example.com/cisco/bookings/ontology#dealDeskRole"/>
+        <ex:precedesProcess rdf:resource="http://example.com/cisco/bookings/ontology#DealRegistration"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://example.com/cisco/bookings/ontology#DealRegistration">
+        <ex:processDescription>For channel deals, the partner registers the opportunity and route-to-market is set.</ex:processDescription>
+        <ex:precedesProcess rdf:resource="http://example.com/cisco/bookings/ontology#OrderPlacement"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://example.com/cisco/bookings/ontology#OrderPlacement">
+        <ex:processDescription>The customer or partner submits a purchase order, which is validated for configuration and commercial terms.</ex:processDescription>
+        <ex:precedesProcess rdf:resource="http://example.com/cisco/bookings/ontology#BookingRecognition"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://example.com/cisco/bookings/ontology#BookingRecognition">
+        <ex:processDescription>A valid accepted order is booked; booking amount, ACV and TCV are computed and the booking is classified.</ex:processDescription>
+        <ex:precedesProcess rdf:resource="http://example.com/cisco/bookings/ontology#FulfillmentProvisioning"/>
+        <ex:downstreamConsumedBy rdf:resource="http://example.com/cisco/bookings/ontology#Finance"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://example.com/cisco/bookings/ontology#FulfillmentProvisioning">
+        <ex:processDescription>Hardware is shipped; software and SaaS entitlements are provisioned.</ex:processDescription>
+        <ex:precedesProcess rdf:resource="http://example.com/cisco/bookings/ontology#ContractEntitlementCreation"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://example.com/cisco/bookings/ontology#ContractEntitlementCreation">
+        <ex:processDescription>A service or subscription contract is created with coverage level, term and renewal date context.</ex:processDescription>
+        <ex:precedesProcess rdf:resource="http://example.com/cisco/bookings/ontology#RenewalLifecycle"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://example.com/cisco/bookings/ontology#RenewalLifecycle">
+        <ex:processDescription>Customer Experience manages upcoming expirations; renewal bookings flow back into booking analytics.</ex:processDescription>
+    </rdf:Description>
+
+</rdf:RDF>
